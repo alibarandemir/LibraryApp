@@ -14,17 +14,13 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "publishers")
-@AttributeOverride(name = "id", column = @Column(name = "publisherId"))
-public class Publisher extends BaseEntity {
+@Table(name = "authors")
+@AttributeOverride(name = "id", column = @Column(name = "authorId"))
+public class Author extends BaseEntity {
 
-    @Column(name = "publisherName",nullable = false)
-    private String publisherName;
+    @Column(name = "authorNameSurname",nullable = false)
+    private String authorNameSurname;
 
-    @OneToMany(mappedBy = "publisher",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    //Burada SET yapısı da kullanabilirdim. (Benzersiz data olacağı için)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<>();
-
-
 }
-    

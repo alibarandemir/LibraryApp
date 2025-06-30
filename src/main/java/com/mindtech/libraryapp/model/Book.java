@@ -29,13 +29,9 @@ public class Book extends BaseEntity {
     @JoinColumn(name = "publisher_id", nullable = false)
     private Publisher publisher;
 
-
-
-    
-
-   
-   
-   
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private Author author;
 
     
 }

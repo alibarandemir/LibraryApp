@@ -24,15 +24,16 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class BookServiceImpl implements BookService {
 
+    //Injection
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final PublisherRepository publisherRepository;
 
     @Override
-    @Transactional
+    @Transactional //Birden fazla tabloda işlem olacağı için kullandım
     public ResponseDto<BookDto> createBook(BookCreateRequest request) {
         try {
-            // 1. Yayıncıyı bul veya oluştur
+            // Publisher bulunur yoksa oluşturulur
             Publisher publisher = publisherRepository.findByPublisherName(request.getPublisherName())
                     .orElseGet(() -> {
                         Publisher newPublisher = Publisher.builder()
@@ -40,7 +41,7 @@ public class BookServiceImpl implements BookService {
                                 .build();
                         return publisherRepository.save(newPublisher);
                     });
-
+            //Author bulunur yoksa oluşturulur
             Author author = authorRepository.findByAuthorNameSurname(request.getAuthorNameSurname())
                     .orElseGet(() -> {
                         Author newAuthor = Author.builder()
@@ -49,7 +50,6 @@ public class BookServiceImpl implements BookService {
                         return authorRepository.save(newAuthor);
                     });
 
-            // 2. Kitabı oluştur
             Book book = Book.builder()
                     .title(request.getTitle())
                     .price(request.getPrice())
@@ -63,9 +63,6 @@ public class BookServiceImpl implements BookService {
             // Yazara kitabı ekle
             author.getBooks().add(book);
             authorRepository.save(author); 
-            
-
-            // 4. DTO'ya dönüştür
             BookDto dto = BookDto.builder()
                     .title(book.getTitle())
                     .price(book.getPrice())
@@ -87,11 +84,9 @@ public class BookServiceImpl implements BookService {
             Book book = bookRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Kitap bulunamadı"));
 
-            // 2. İlişkili yayıncı ve yazar bilgilerini al
             Publisher publisher = book.getPublisher();
             Author author = book.getAuthor();
 
-            // 3. DTO dönüşümü
             BookDto dto = BookDto.builder()
                     .title(book.getTitle())
                     .price(book.getPrice())
@@ -134,11 +129,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public ResponseDto<BookDto> updateBook(Long id, BookCreateRequest request) {
         try {
-            // 1. Güncellenecek kitabı bul
             Book book = bookRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Güncellenecek kitap bulunamadı"));
 
-            // 2. Publisher'ı kontrol et → yoksa oluştur
+            //Publisher bulunur yoksa oluşturulur
             Publisher publisher = publisherRepository.findByPublisherName(book.getPublisher().getPublisherName())
                     .orElseGet(() -> {
                         Publisher newPublisher = Publisher.builder()
@@ -148,8 +142,6 @@ public class BookServiceImpl implements BookService {
                     });
             publisher.setPublisherName(request.getPublisherName());
             publisherRepository.save(publisher);
-
-            // 3. Author'ı kontrol et → yoksa oluştur
             Author author = authorRepository.findByAuthorNameSurname(book.getAuthor().getAuthorNameSurname())
                     .orElseGet(() -> {
                         Author newAuthor = Author.builder()
@@ -160,7 +152,6 @@ public class BookServiceImpl implements BookService {
             author.setAuthorNameSurname(request.getAuthorNameSurname());
             authorRepository.save(author);
 
-            // 4. Kitabın alanlarını güncelle
             book.setTitle(request.getTitle());
             book.setPrice(request.getPrice());
             book.setISBN13(request.getISBN13());
@@ -168,9 +159,7 @@ public class BookServiceImpl implements BookService {
             book.setPublisher(publisher);
             book.setAuthor(author);
 
-            bookRepository.save(book); // güncellenmiş kitabı kaydet
-
-            // 5. DTO'ya dönüştür
+            bookRepository.save(book); 
             BookDto dto = BookDto.builder()
                     .title(book.getTitle())
                     .price(book.getPrice())
@@ -232,8 +221,9 @@ public class BookServiceImpl implements BookService {
     @Override
     public ResponseDto<List<BookDto>> getBooksAfter2023() {
         try {
+            //Query yapısı çağrılıyor burada
             List<Book> books = bookRepository.findBooksAfter2023();
-
+            //Mapleme ile DTO-Model dönüşümü yapılıyor
             List<BookDto> bookDtos = books.stream().map(book -> {
                 Publisher publisher = book.getPublisher();
                 Author author = book.getAuthor();

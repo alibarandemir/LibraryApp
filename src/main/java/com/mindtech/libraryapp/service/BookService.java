@@ -1,23 +1,23 @@
 package com.mindtech.libraryapp.service;
 
-import com.mindtech.libraryapp.dto.response.BookDto;
-
 import java.util.List;
 
+import com.mindtech.libraryapp.dto.ResponseDto;
 import com.mindtech.libraryapp.dto.request.BookCreateRequest;
+import com.mindtech.libraryapp.dto.response.BookDto;
 
 public interface BookService {
     //crud işlemleri
-    BookDto createBook(BookCreateRequest request);
-    BookDto getBookById(Long id);
-    List<BookDto> getAllBooks();
-    BookDto updateBook(Long id, BookCreateRequest request);
-    void deleteBook(Long id);
+    ResponseDto<BookDto> createBook(BookCreateRequest request);
+    ResponseDto<BookDto> getBookById(Long id);
+    ResponseDto<List<BookDto>> getAllBooks();
+    ResponseDto<BookDto> updateBook(Long id, BookCreateRequest request);
+    ResponseDto<Void> deleteBook(Long id);
 
     //A ile başlayan kitapları getiren servis imzası
-    List<BookDto> getBooksStartingWithA();
+    ResponseDto<List<BookDto>> getBooksStartingWithA();
     //2023 yılından sonra yayınlanan kitapları getiren servis imzası
-    List<BookDto> getBooksAfter2023();
+    ResponseDto<List<BookDto>> getBooksAfter2023();
 
 
     

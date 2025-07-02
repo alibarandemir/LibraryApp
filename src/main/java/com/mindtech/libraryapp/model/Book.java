@@ -1,5 +1,7 @@
 package com.mindtech.libraryapp.model;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +21,11 @@ public class Book extends BaseEntity {
     private String title;
 
     @Column(name = "price")
-    private Integer price;
+    private Double price;
+
+    //Bu attribute ödevdeki model örneğinde yoktu fakat casede istenilen diğer alan için gerekliydi
+    @Column(name = "publication_date",nullable = false)
+    private LocalDate publicationDate;
 
     @Column(name = "ISBN13",nullable = false,unique = true)
     private String ISBN13;

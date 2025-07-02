@@ -48,8 +48,7 @@ build/
 
 # Maven
 .mvn/
-!**/src/main/**/application.properties
-!**/src/main/**/application.yml
+
 
 # Test raporları
 /test-output/

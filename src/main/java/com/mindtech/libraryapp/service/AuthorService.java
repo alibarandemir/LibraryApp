@@ -1,5 +1,13 @@
 package com.mindtech.libraryapp.service;
 
-public class AuthorService {
+import java.util.List;
+
+import com.mindtech.libraryapp.dto.response.AuthorDto;
+import com.mindtech.libraryapp.dto.ResponseDto;
+
+public interface AuthorService {
     
+    ResponseDto<List<AuthorDto>> getAllAuthors();
+
+
 }

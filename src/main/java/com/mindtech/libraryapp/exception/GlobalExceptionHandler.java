@@ -20,6 +20,7 @@ public class GlobalExceptionHandler {
     //Genel exception
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseDto<Void>> handleGenericException(Exception ex) {
+        ex.printStackTrace();
         ResponseDto<Void> response = ResponseDto.errorResponse("Beklenmeyen bir hata oluştu: " + ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }

@@ -19,6 +19,8 @@ public interface BookService {
     //2023 yılından sonra yayınlanan kitapları getiren servis imzası
     ResponseDto<List<BookDto>> getBooksAfter2023();
 
+    ResponseDto<List<BookDto>> searchBooks(String query);
+
 
     
 } 

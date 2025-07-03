@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mindtech.libraryapp.dto.ResponseDto;
@@ -17,6 +18,7 @@ import com.mindtech.libraryapp.dto.request.BookCreateRequest;
 import com.mindtech.libraryapp.dto.response.BookDto;
 import com.mindtech.libraryapp.service.BookService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -60,5 +62,12 @@ public class BookController {
     @GetMapping("/after-2023")
     public ResponseEntity<ResponseDto<List<BookDto>>> getBooksAfter2023(){
         return ResponseEntity.ok(bookService.getBooksAfter2023());
+    }
+
+    //Swagger Dokümantasyon için
+    @Operation(summary = "Search books from Google API")
+    @GetMapping("/search")
+    public ResponseEntity<ResponseDto<List<BookDto>>> searchBooks(@RequestParam("q") String query){
+        return ResponseEntity.ok(bookService.searchBooks(query));
     }
 }
